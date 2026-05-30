@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { signIn, useSession } from 'next-auth/react';
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,13 +32,6 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.replace('/dashboard');
-    }
-  }, [status, router]);
 
   const {
     register,
@@ -60,7 +53,7 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setAuthError(result.error);
+        setAuthError('Email atau password tidak valid');
       } else if (result?.ok) {
         router.replace('/dashboard');
       }
@@ -73,14 +66,11 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-background flex overflow-hidden relative">
-      {/* Background Grid */}
       <div className="absolute inset-0 grid-bg opacity-60 pointer-events-none" />
-
-      {/* Ambient glow effects */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[128px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[128px] pointer-events-none" />
 
-      {/* Left Panel - Branding */}
+      {/* Left Panel */}
       <div className="hidden lg:flex w-1/2 flex-col justify-between p-12 relative">
         <div>
           <motion.div
@@ -142,7 +132,6 @@ export default function LoginPage() {
             ))}
           </motion.div>
 
-          {/* Testimonial */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -174,7 +163,7 @@ export default function LoginPage() {
         </motion.p>
       </div>
 
-      {/* Right Panel - Login Form */}
+      {/* Right Panel */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
@@ -182,7 +171,6 @@ export default function LoginPage() {
           transition={{ duration: 0.6 }}
           className="w-full max-w-md"
         >
-          {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
             <div className="w-9 h-9 bg-amber-500 rounded-lg flex items-center justify-center">
               <Shield className="w-4 h-4 text-gray-900" />
@@ -207,11 +195,8 @@ export default function LoginPage() {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Email */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">
-                  Email Akun
-                </label>
+                <label className="text-sm font-medium text-foreground">Email Akun</label>
                 <div className="relative">
                   <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
@@ -230,11 +215,8 @@ export default function LoginPage() {
                 )}
               </div>
 
-              {/* Password */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">
-                  Password
-                </label>
+                <label className="text-sm font-medium text-foreground">Password</label>
                 <div className="relative">
                   <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
@@ -249,11 +231,7 @@ export default function LoginPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
                   >
-                    {showPassword ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
                 {errors.password && (
@@ -264,7 +242,6 @@ export default function LoginPage() {
                 )}
               </div>
 
-              {/* Auth Error */}
               <AnimatePresence>
                 {authError && (
                   <motion.div
@@ -279,7 +256,6 @@ export default function LoginPage() {
                 )}
               </AnimatePresence>
 
-              {/* Submit */}
               <button
                 type="submit"
                 disabled={isLoading}

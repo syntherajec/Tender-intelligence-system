@@ -298,42 +298,6 @@ export default function LoginPage() {
                 )}
               </button>
             </form>
-
-            {/* Demo credentials */}
-            <div className="mt-6 pt-5 border-t border-border/50">
-              <p className="text-xs text-muted-foreground text-center mb-3 uppercase tracking-widest">
-                Demo Access
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { label: 'Admin', email: 'admin@tendersystem.id', pass: 'password' },
-                  { label: 'Analyst', email: 'analyst@tendersystem.id', pass: 'password' },
-                ].map((cred) => (
-                  <button
-                    key={cred.label}
-                    type="button"
-                    onClick={async () => {
-                      setIsLoading(true);
-                      setAuthError(null);
-                      try {
-                        const result = await signIn('credentials', {
-                          email: cred.email,
-                          password: cred.pass,
-                          redirect: false,
-                        });
-                        if (result?.ok) router.replace('/dashboard');
-                        else setAuthError(result?.error || 'Login gagal');
-                      } finally {
-                        setIsLoading(false);
-                      }
-                    }}
-                    className="text-xs py-2 px-3 rounded-lg bg-muted hover:bg-accent border border-border hover:border-amber-500/30 text-muted-foreground hover:text-foreground transition-all"
-                  >
-                    {cred.label}
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
 
           <p className="text-center text-xs text-muted-foreground mt-6">

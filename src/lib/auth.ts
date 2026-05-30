@@ -1,13 +1,12 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-// Simple password check — replace with DB in production
 const USERS_DB = [
   {
     id: '1',
     name: 'Administrator',
     email: 'admin@tendersystem.id',
-    password: 'password',
+    password: 'adminazka',
     role: 'admin' as const,
     company: 'PT. Tender Intelligence Indonesia',
     isActive: true,
@@ -17,7 +16,7 @@ const USERS_DB = [
     id: '2',
     name: 'Demo Analyst',
     email: 'analyst@tendersystem.id',
-    password: 'password',
+    password: 'adminazka',
     role: 'analyst' as const,
     company: 'PT. Demo Konstruksi',
     isActive: true,
@@ -45,10 +44,7 @@ export const authOptions: NextAuthOptions = {
         if (!user) throw new Error('Email atau password tidak valid');
         if (!user.isActive) throw new Error('Akun dinonaktifkan. Hubungi administrator.');
 
-        const adminPass = process.env.ADMIN_PASSWORD || 'Admin@TIS2024!';
-        const isValid =
-          credentials.password === user.password ||
-          (user.role === 'admin' && credentials.password === adminPass);
+        const isValid = credentials.password === user.password;
 
         if (!isValid) throw new Error('Email atau password tidak valid');
 
